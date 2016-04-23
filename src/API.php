@@ -57,14 +57,14 @@ class API
      *
      * @param string $method HTTP method of request (GET,POST,PUT,DELETE)
      * @param string $path relative url of API request
-     * @param string $content body of the request
+     * @param mixed $content body of the request
      * @return mixed
      *
      * @throws \Exception
      * @throws \Convertio\Exceptions\APIException if the Convertio API returns an error
      * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
      */
-    private function _rawCall($method, $path, $content = null)
+    private function rawRequest($method, $path, $content = null)
     {
         $url = $path;
         if (strpos($path, '//') === 0) {
@@ -76,18 +76,17 @@ class API
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_HEADER, FALSE);
+        curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->http_timeout);
         curl_setopt($curl, CURLOPT_TIMEOUT, $this->http_timeout);
 
         if ($method == 'GET') {
-
         } elseif ($method == 'DELETE') {
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
         } elseif (gettype($content) == 'resource' && $method == 'PUT') {
             $fstat = fstat($content);
-            curl_setopt($curl, CURLOPT_PUT, TRUE);
+            curl_setopt($curl, CURLOPT_PUT, true);
             curl_setopt($curl, CURLOPT_INFILE, $content);
             curl_setopt($curl, CURLOPT_INFILESIZE, $fstat['size']);
         } elseif (is_array($content) && ($method == 'POST')) {
@@ -99,31 +98,29 @@ class API
         $response = curl_exec($curl);
         $response_info = curl_getinfo($curl);
         $response_errno = curl_errno($curl);
-	    $response_error = curl_error($curl);
-	    curl_close($curl);
-	    $curl = null;
+        $response_error = curl_error($curl);
+        curl_close($curl);
+        $curl = null;
 
-        if (isset($response_info['content_type']) && strpos($response_info['content_type'], 'application/json') !== FALSE) {
-        	try {
-	            $data = json_decode($response, true);
-	        } catch (\Exception $e) {
-	            if (JSON_ERROR_NONE !== json_last_error()) {
- 		  	        throw new \Exception('Error parsing JSON response');
-	            }
+        if (isset($response_info['content_type']) && strpos($response_info['content_type'], 'application/json') !== false) {
+            try {
+                $data = json_decode($response, true);
+            } catch (\Exception $e) {
+                if (JSON_ERROR_NONE !== json_last_error()) {
+                    throw new \Exception('Error parsing JSON response');
+                }
                 throw new \Exception($e);
-	        }
+            }
 
-            if ($data['status'] == 'error')
-            {
-		        throw new Exceptions\APIException($data['error'], $data['code']);
+            if ($data['status'] == 'error') {
+                throw new Exceptions\APIException($data['error'], $data['code']);
             }
 
             return $data;
         } elseif ($response_errno === 0) {
             return $response;
-        } else
-        {
-	        throw new Exceptions\CURLException($response_error, $response_errno);
+        } else {
+            throw new Exceptions\CURLException($response_error, $response_errno);
         }
     }
 
@@ -141,7 +138,7 @@ class API
      */
     public function get($path, $content = null)
     {
-        return $this->_rawCall("GET", $path, $content);
+        return $this->rawRequest("GET", $path, $content);
     }
 
     /**
@@ -158,7 +155,7 @@ class API
      */
     public function post($path, $content)
     {
-        return $this->_rawCall("POST", $path, $content);
+        return $this->rawRequest("POST", $path, $content);
     }
 
     /**
@@ -175,7 +172,7 @@ class API
      */
     public function put($path, $content)
     {
-        return $this->_rawCall("PUT", $path, $content);
+        return $this->rawRequest("PUT", $path, $content);
     }
 
     /**
@@ -192,7 +189,7 @@ class API
      */
     public function delete($path, $content = null)
     {
-        return $this->_rawCall("DELETE", $path, $content);
+        return $this->rawRequest("DELETE", $path, $content);
     }
 
     /**
@@ -204,6 +201,4 @@ class API
     {
         return $this->api_key;
     }
-
-
 }

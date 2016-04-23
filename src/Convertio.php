@@ -7,13 +7,13 @@ namespace Convertio;
 /**
  * Convertio API Wrapper
  */
-class Convertio {
-
+class Convertio
+{
     /**
      * Instance of API Class
      * @var API
      */
-	private $api;
+    private $api;
 
     /**
      * Internal Convertio conversion ID
@@ -106,7 +106,7 @@ class Convertio {
      */
     public function start($input_fn, $output_format)
     {
-        $data = Array();
+        $data = array();
         $data['input'] = 'base64';
         $data['file'] = base64_encode(file_get_contents($input_fn));
         $data['filename'] = basename($input_fn);
@@ -114,14 +114,12 @@ class Convertio {
 
         $this->data = $this->api->post('/convert', $data);
 
-        if ($this->data['status'] == 'error')
-        {
-          $this->step = 'error';
-          $this->error_message = $this->data['error'];
-        } else
-        {
-          $this->convert_id = $this->data['data']['id'];
-          $this->step = 'convert';
+        if ($this->data['status'] == 'error') {
+            $this->step = 'error';
+            $this->error_message = $this->data['error'];
+        } else {
+            $this->convert_id = $this->data['data']['id'];
+            $this->step = 'convert';
         }
 
         return $this;
@@ -132,7 +130,7 @@ class Convertio {
      * Starts new conversion from remote url
      *
      * @param string $url URI of input file or web-page
-     * @param string $output_format output format. You can view available formats on https://convertio.co/formats/
+     * @param string $out_format output format. You can view available formats on https://convertio.co/formats/
      * @return \Convertio\Convertio
      *
      * @throws \Exception
@@ -140,23 +138,21 @@ class Convertio {
      * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
      *
      */
-    public function start_from_url($url, $out_format)
+    public function startFromURL($url, $out_format)
     {
-        $data = Array();
+        $data = array();
         $data['input'] = 'url';
         $data['file'] = $url;
         $data['outputformat'] = $out_format;
 
         $this->data = $this->api->post('/convert', $data);
 
-        if ($this->data['status'] == 'error')
-        {
-          $this->step = 'error';
-          $this->error_message = $this->data['error'];
-        } else
-        {
-          $this->convert_id = $this->data['data']['id'];
-          $this->step = 'convert';
+        if ($this->data['status'] == 'error') {
+            $this->step = 'error';
+            $this->error_message = $this->data['error'];
+        } else {
+            $this->convert_id = $this->data['data']['id'];
+            $this->step = 'convert';
         }
 
         return $this;
@@ -178,25 +174,22 @@ class Convertio {
         $this->data = $this->api->get('/convert/'.$this->convert_id.'/dl/base64', false);
         $content = @base64_decode($this->data['data']['content']);
 
-        if (empty($content))
-        {
-          $this->step = 'error';
-          $this->error_message = 'Empty result file';
-          throw new Exceptions\APIException($this->error_message);
+        if (empty($content)) {
+            $this->step = 'error';
+            $this->error_message = 'Empty result file';
+            throw new Exceptions\APIException($this->error_message);
         }
 
-        if (file_put_contents($local_fn,$content) === FALSE)
-        {
-          $this->step = 'error';
-          $this->error_message = 'Error saving local file';
-          throw new Exceptions\APIException($this->error_message);
+        if (file_put_contents($local_fn, $content) === false) {
+            $this->step = 'error';
+            $this->error_message = 'Error saving local file';
+            throw new Exceptions\APIException($this->error_message);
         }
 
-        if ((!file_exists($local_fn)) || (filesize($local_fn) == 0))
-        {
-          $this->step = 'error';
-          $this->error_message = 'Error saving local file';
-          throw new Exceptions\APIException($this->error_message);
+        if ((!file_exists($local_fn)) || (filesize($local_fn) == 0)) {
+            $this->step = 'error';
+            $this->error_message = 'Error saving local file';
+            throw new Exceptions\APIException($this->error_message);
         }
 
         return $this;
@@ -215,28 +208,25 @@ class Convertio {
     public function status()
     {
         $data = $this->api->get('/convert/'.$this->convert_id.'/status', false);
-        if ($data['status'] == 'error')
-        {
-          $this->step = 'error';
-          $this->error_message = $data['error'];
-        } else
-        {
-          $this->error_message = '';
-          $this->step = $data['data']['step'];
-          $this->step_percent = isset($data['data']['step_percent'])?$data['data']['step_percent']:0;
+        if ($data['status'] == 'error') {
+            $this->step = 'error';
+            $this->error_message = $data['error'];
+        } else {
+            $this->error_message = '';
+            $this->step = $data['data']['step'];
+            $this->step_percent = isset($data['data']['step_percent'])?$data['data']['step_percent']:0;
 
-          if ($this->step == 'finish')
-          {
-            $this->result_public_url = $data['data']['output']['url'];
-            $this->result_size = $data['data']['output']['size'];
-          }
+            if ($this->step == 'finish') {
+                $this->result_public_url = $data['data']['output']['url'];
+                $this->result_size = $data['data']['output']['size'];
+            }
         }
 
         return $this;
     }
 
     /**
-     * Delete current conversion and all assosiated files from Convertio hosts
+     * Delete current conversion and all associated files from Convertio hosts
      *
      * @return \Convertio\Convertio
      *
@@ -250,5 +240,4 @@ class Convertio {
         $this->api->delete('/convert/'.$this->convert_id, false);
         return $this;
     }
-
 }

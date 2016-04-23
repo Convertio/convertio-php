@@ -23,7 +23,7 @@ Following example will render remote web page into PNG image:
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
 
-  $API->start_from_url('http://google.com/','png')  // Convert (Render) HTML Page to PNG
+  $API->startFromURL('http://google.com/', 'png')   // Convert (Render) HTML Page to PNG
   ->wait()                                          // Wait for conversion finish
   ->download('./google.png')                        // Download Result To Local File
   ->delete();                                       // Delete Files from Convertio hosts
@@ -36,7 +36,7 @@ Following example will convert local DOCX file to PDF:
   use \Convertio\Convertio;
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
-  $API->start('./input.docx','pdf')->wait()->download('./output.pdf')->delete();
+  $API->start('./input.docx', 'pdf')->wait()->download('./output.pdf')->delete();
 ```
 
 Installation
@@ -67,12 +67,10 @@ The following example shows how to catch the different exception types which can
 
   try {
       $API = new Convertio("_YOUR_API_KEY_");
-      $API->start('./test.pdf','docx')->wait()->download('test.docx')->delete();
-  } catch (APIException $e)
-  {
+      $API->start('./test.pdf', 'docx')->wait()->download('test.docx')->delete();
+  } catch (APIException $e) {
       echo "API Exception: " . $e->getMessage() . " [Code: ".$e->getCode()."]" . "\n";
-  } catch (CURLException $e)
-  {
+  } catch (CURLException $e) {
       echo "HTTP Connection Exception: " . $e->getMessage() . " [CURL Code: ".$e->getCode()."]" . "\n";
   } catch (Exception $e) {
       echo "Miscellaneous Exception occurred: " . $e->getMessage() . "\n";
