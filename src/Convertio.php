@@ -93,6 +93,32 @@ class Convertio
 
 
     /**
+     * Starts new conversion with custom data.
+     *
+     * @param array $data parameters for the conversion
+     * @return \Convertio\Convertio
+     *
+     * @throws \Exception
+     * @throws \Convertio\Exceptions\APIException if the Convertio API returns an error
+     * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
+     *
+     */
+    public function rawStart($data)
+    {
+        $this->data = $this->api->post('/convert', $data);
+
+        if ($this->data['status'] == 'error') {
+            $this->step = 'error';
+            $this->error_message = $this->data['error'];
+        } else {
+            $this->convert_id = $this->data['data']['id'];
+            $this->step = 'convert';
+        }
+        return $this;
+    }
+
+
+    /**
      * Starts new conversion from local file
      *
      * @param string $input_fn path to local input file
@@ -112,17 +138,7 @@ class Convertio
         $data['filename'] = basename($input_fn);
         $data['outputformat'] = $output_format;
 
-        $this->data = $this->api->post('/convert', $data);
-
-        if ($this->data['status'] == 'error') {
-            $this->step = 'error';
-            $this->error_message = $this->data['error'];
-        } else {
-            $this->convert_id = $this->data['data']['id'];
-            $this->step = 'convert';
-        }
-
-        return $this;
+        return $this->rawStart($data);
     }
 
 
@@ -145,17 +161,7 @@ class Convertio
         $data['file'] = $url;
         $data['outputformat'] = $out_format;
 
-        $this->data = $this->api->post('/convert', $data);
-
-        if ($this->data['status'] == 'error') {
-            $this->step = 'error';
-            $this->error_message = $this->data['error'];
-        } else {
-            $this->convert_id = $this->data['data']['id'];
-            $this->step = 'convert';
-        }
-
-        return $this;
+        return $this->rawStart($data);
     }
 
     /**
