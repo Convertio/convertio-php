@@ -164,6 +164,30 @@ class Convertio
         return $this->rawStart($data);
     }
 
+
+    /**
+     * Starts new conversion from raw content
+     *
+     * @param string $content converting file's content.
+     * @param string $output_format output format. You can view available formats on https://convertio.co/formats/
+     * @return \Convertio\Convertio
+     *
+     * @throws \Exception
+     * @throws \Convertio\Exceptions\APIException if the Convertio API returns an error
+     * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
+     *
+     */
+    public function startFromContent($content, $input_format, $output_format)
+    {
+        $data = array();
+        $data['input'] = 'raw';
+        $data['file'] = $content;
+        $data['filename'] = 'raw.' . $input_format;
+        $data['outputformat'] = $output_format;
+
+        return $this->rawStart($data);
+    }
+
     /**
      * Download result file to local host
      *
