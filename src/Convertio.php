@@ -146,7 +146,7 @@ class Convertio
      * Starts new conversion from remote url
      *
      * @param string $url URI of input file or web-page
-     * @param string $out_format output format. You can view available formats on https://convertio.co/formats/
+     * @param string $output_format output format. You can view available formats on https://convertio.co/formats/
      * @return \Convertio\Convertio
      *
      * @throws \Exception
@@ -154,12 +154,12 @@ class Convertio
      * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
      *
      */
-    public function startFromURL($url, $out_format)
+    public function startFromURL($url, $output_format)
     {
         $data = array();
         $data['input'] = 'url';
         $data['file'] = $url;
-        $data['outputformat'] = $out_format;
+        $data['outputformat'] = $output_format;
 
         return $this->rawStart($data);
     }
