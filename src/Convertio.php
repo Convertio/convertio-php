@@ -169,6 +169,7 @@ class Convertio
      * Starts new conversion from raw content
      *
      * @param string $content converting file's content.
+     * @param string $input_format input format. You can view available formats on https://convertio.co/formats/
      * @param string $output_format output format. You can view available formats on https://convertio.co/formats/
      * @return \Convertio\Convertio
      *
