@@ -166,7 +166,8 @@ class Convertio
 
 
     /**
-     * Starts new conversion from raw content
+     * Starts new conversion from raw content. Base64 is needed as JSON is not binary safe.
+     * We will use PUT method for raw content in future.
      *
      * @param string $content converting file's content.
      * @param string $input_format input format. You can view available formats on https://convertio.co/formats/
@@ -181,8 +182,8 @@ class Convertio
     public function startFromContent($content, $input_format, $output_format)
     {
         $data = array();
-        $data['input'] = 'raw';
-        $data['file'] = $content;
+        $data['input'] = 'base64';
+        $data['file'] = base64_encode($content);
         $data['filename'] = 'raw.' . $input_format;
         $data['outputformat'] = $output_format;
 
