@@ -39,6 +39,18 @@ Following example will convert local DOCX file to PDF:
   $API->start('./input.docx', 'pdf')->wait()->download('./output.pdf')->delete();
 ```
 
+Following example will extract clean text from DOCX:
+```php
+<?php
+  require 'autoload.php';
+  use \Convertio\Convertio;
+
+  $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
+  $Text = $API->start('./test.docx', 'txt')->wait()->fetchResultContent()->result_content;
+  $API->delete();
+  echo $Text;
+```
+
 Installation
 -------------------
 You can download the package in its entirety. The [Releases](https://github.com/convertio/convertio-php/releases) page lists all stable versions.
