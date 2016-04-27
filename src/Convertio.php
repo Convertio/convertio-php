@@ -53,6 +53,12 @@ class Convertio
     public $result_public_url;
 
     /**
+     * Contain result file's. More info: https://convertio.co/api/docs/
+     * @var string
+     */
+    public $result_content;
+
+    /**
      * Contain size in bytes of result file. More info: https://convertio.co/api/docs/
      * @var integer
      */
@@ -191,6 +197,30 @@ class Convertio
     }
 
     /**
+     * Fetch result file's content
+     *
+     * @return \Convertio\Convertio
+     *
+     * @throws \Exception
+     * @throws \Convertio\Exceptions\APIException if the Convertio API returns an error
+     * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
+     *
+     */
+    public function fetchResultContent()
+    {
+      $this->data = $this->api->get('/convert/'.$this->convert_id.'/dl/base64', false);
+      $this->result_content = @base64_decode($this->data['data']['content']);
+
+      if (empty($this->result_content)) {
+          $this->step = 'error';
+          $this->error_message = 'Empty result file';
+          throw new Exceptions\APIException($this->error_message);
+      }
+
+      return $this;
+    }
+
+    /**
      * Download result file to local host
      *
      * @param string $local_fn path to local file to store the result
@@ -203,16 +233,9 @@ class Convertio
      */
     public function download($local_fn)
     {
-        $this->data = $this->api->get('/convert/'.$this->convert_id.'/dl/base64', false);
-        $content = @base64_decode($this->data['data']['content']);
+        $this->fetchResultContent();
 
-        if (empty($content)) {
-            $this->step = 'error';
-            $this->error_message = 'Empty result file';
-            throw new Exceptions\APIException($this->error_message);
-        }
-
-        if (file_put_contents($local_fn, $content) === false) {
+        if (file_put_contents($local_fn, $this->result_content) === false) {
             $this->step = 'error';
             $this->error_message = 'Error saving local file';
             throw new Exceptions\APIException($this->error_message);
