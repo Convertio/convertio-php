@@ -249,6 +249,35 @@ class Convertio
 
         return $this;
     }
+    
+    /**
+     * Download result file to current Browser (Good for https://ifttt.com/)
+     *
+     * @param string $local_fn path to local file to store the result
+     * @return \Convertio\Convertio
+     *
+     * @throws \Exception
+     * @throws \Convertio\Exceptions\APIException if the Convertio API returns an error
+     * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
+     *
+     */
+    public function downloadBrowser($local_fn) {
+	    
+	    $this->fetchResultContent();
+	    file_put_contents($local_fn, $this->result_content);
+
+		if (file_exists($local_fn)) {
+		    header('Content-Description: File Transfer');
+		    header('Content-Type: application/octet-stream');
+		    header('Content-Disposition: attachment; filename="'.basename($local_fn).'"');
+		    header('Expires: 0');
+		    header('Cache-Control: must-revalidate');
+		    header('Pragma: public');
+		    header('Content-Length: ' . filesize($local_fn));
+		    readfile($local_fn);
+		    exit;
+		}	    
+	}
 
     /**
      * Update status/progress of the conversion
