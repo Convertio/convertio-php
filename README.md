@@ -29,6 +29,20 @@ Following example will render remote web page into PNG image:
   ->delete();                                       // Delete Files from Convertio hosts
 ```
 
+Following example will render remote web page into PDF and force download to current browser:
+```php
+<?php
+  require 'autoload.php';
+  use \Convertio\Convertio;
+
+  $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
+
+  $API->startFromURL('http://google.com/', 'pdf')   // Convert (Render) HTML Page to PDF
+  ->wait()                                          // Wait for conversion finish
+  ->downloadBrowser('./google.png')                 // Download Result To Current Browser
+  ->delete();                                       // Delete Files from Convertio hosts
+```
+
 Following example will convert local DOCX file to PDF:
 ```php
 <?php
@@ -50,6 +64,7 @@ Following example will extract clean text from DOCX:
   $API->delete();
   echo $Text;
 ```
+
 
 Installation
 -------------------
