@@ -30,10 +30,16 @@ class API
     private $api_key = null;
 
     /**
-     * HTTP Requests timeout in seconds
+     * HTTP Full requests timeout in seconds (file uploading timeout included). 0 = No Timeout
      * @var integer
      */
-    private $http_timeout = 3;
+    private $http_timeout = 0;
+
+    /**
+     * HTTP connect timeout in seconds.  0 = No Timeout
+     * @var integer
+     */
+    private $http_connect_timeout = 10;
 
     /**
      * Construct a new wrapper instance
@@ -78,7 +84,7 @@ class API
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->http_timeout);
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, $this->http_connect_timeout);
         curl_setopt($curl, CURLOPT_TIMEOUT, $this->http_timeout);
 
         if ($method == 'GET') {
