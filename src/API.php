@@ -47,13 +47,18 @@ class API
      * @param string $api_key API Key of your application.
      * You can get your API Key on https://convertio.co/api/
      *
-     * @throws \Convertio\Exceptions\APIException if api key is missing or empty
+     * @throws \Convertio\Exceptions\APIException if api key is missing/empty or CURL extension is not installed
      */
     public function __construct($api_key)
     {
         if (empty($api_key)) {
             throw new APIException("API Key parameter is empty");
         }
+
+        if (!function_exists('curl_version')) {
+            throw new APIException("This API Wrapper requires PHP CURL extension to be enabled (http://php.net/curl)");
+        }
+
         $this->api_key = $api_key;
     }
 
