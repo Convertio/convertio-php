@@ -58,6 +58,49 @@ class API
     }
 
     /**
+     * This method is used to override wrapper config variables, i.e.:
+     * $API->__set('api_protocol','http')->__set('http_timeout',10)
+     *
+     * @param string $property one of the wrapper private property
+     * @param string $value the value of the property
+     * @return mixed
+     *
+     * @throws \Convertio\Exceptions\APIException if the value of property is incorrect
+     */
+    public function __set($property, $value)
+    {
+        if (property_exists($this, $property)) {
+            if (($property == 'api_protocol') && !in_array($value, array('http','https'))) {
+                throw new APIException("API Protocol can be either http or https");
+            } elseif (($property == 'http_timeout') && ($value < 0)) {
+                throw new APIException("HTTP Timeout can't be negative");
+            } elseif (($property == 'http_connect_timeout') && ($value < 0)) {
+                throw new APIException("HTTP Timeout can't be negative");
+            }
+            $this->$property = $value;
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * This method is used to read current wrapper config variables, i.e.:
+     * print_r($API->__get('api_protocol')) // will echo 'https'
+     *
+     * @param string $property one of the wrapper private property
+     * @return mixed
+     */
+    public function __get($property)
+    {
+        if (property_exists($this, $property)) {
+            return $this->$property;
+        }
+        return null;
+    }
+
+
+    /**
      * This is the main method of this wrapper. It will
      * sign a given query and return its result.
      *

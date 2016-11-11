@@ -68,13 +68,34 @@ class Convertio
      * Construct a new Convertio instance
      *
      * @param string $api_key API Key of your application. You can get your API Key on https://convertio.co/api/
+     * @param array $settings Allows overriding of default API wrapper parameters (http protocol, timeouts)
      * @return \Convertio\Convertio
      *
-     * @throws \Convertio\Exceptions\APIException if api key is missing or empty
+     * @throws \Convertio\Exceptions\APIException if api key is missing or empty or settings is incorrect
      */
-    public function __construct($api_key = null)
+    public function __construct($api_key = null, $settings = array())
     {
         $this->api = new API($api_key);
+
+        $this->settings($settings);
+
+        return $this;
+    }
+
+    /**
+     * Override default API wrapper parameters
+     *
+     * @param array $settings Allows overriding of default API wrapper parameters (http protocol, timeouts)
+     * @return \Convertio\Convertio
+     *
+     * @throws \Convertio\Exceptions\APIException if api key is missing or empty or settings is incorrect
+     */
+    public function settings($settings = array())
+    {
+        foreach ($settings as $property => $value) {
+            $this->api->__set($property, $value);
+        }
+
         return $this;
     }
 

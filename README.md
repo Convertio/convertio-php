@@ -51,6 +51,17 @@ Following example will extract clean text from DOCX:
   echo $Text;
 ```
 
+Following example will override default API parameters in case you don't have SSL enabled in your PHP installation or want to limit execution time:
+```php
+<?php
+  require 'autoload.php';
+  use \Convertio\Convertio;
+
+  $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
+  $API->settings(array('api_protocol' => 'http', 'http_timeout' => 10));
+  $API->startFromURL('http://google.com/', 'png')->wait()->download('./google.png')->delete();
+```
+
 Installation
 -------------------
 You can download the package in its entirety. The [Releases](https://github.com/convertio/convertio-php/releases) page lists all stable versions.
