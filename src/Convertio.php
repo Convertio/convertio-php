@@ -160,12 +160,24 @@ class Convertio
     public function start($input_fn, $output_format)
     {
         $data = array();
-        $data['input'] = 'base64';
-        $data['file'] = base64_encode(file_get_contents($input_fn));
-        $data['filename'] = basename($input_fn);
+        $data['input'] = 'upload';
         $data['outputformat'] = $output_format;
 
-        return $this->rawStart($data);
+        $this->rawStart($data);
+
+        if ($this->step == 'error') {
+            return $this;
+        }
+
+        if (!file_exists($input_fn)) {
+            throw new \Exception("Failed to open stream. No such file: ".$input_fn);
+        }
+
+        $fp = fopen($input_fn, 'r');
+        $this->api->put('/convert/' . $this->convert_id . '/' . basename($input_fn), $fp);
+        fclose($fp);
+
+        return $this;
     }
 
 
