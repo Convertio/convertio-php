@@ -208,16 +208,16 @@ class Convertio
      */
     public function fetchResultContent()
     {
-      $this->data = $this->api->get('/convert/'.$this->convert_id.'/dl/base64', false);
-      $this->result_content = @base64_decode($this->data['data']['content']);
+        $this->data = $this->api->get('/convert/'.$this->convert_id.'/dl/base64', false);
+        $this->result_content = @base64_decode($this->data['data']['content']);
 
-      if (empty($this->result_content)) {
-          $this->step = 'error';
-          $this->error_message = 'Empty result file';
-          throw new Exceptions\APIException($this->error_message);
-      }
+        if (empty($this->result_content)) {
+            $this->step = 'error';
+            $this->error_message = 'Empty result file';
+            throw new Exceptions\APIException($this->error_message);
+        }
 
-      return $this;
+        return $this;
     }
 
     /**
