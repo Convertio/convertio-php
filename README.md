@@ -74,14 +74,14 @@ composer installed.
 Once composer is installed, execute the following command in your project root to install this library:
 
 ```sh
-composer require convertio/convertio-php
+  composer require convertio/convertio-php
 ```
 
 Finally, be sure to include the autoloader:
 
 ```php
 <?php
-require_once '/path/to/your-project/vendor/autoload.php';
+  require_once '/path/to/your-project/vendor/autoload.php';
 ```
 
 #### Download the Release
@@ -126,7 +126,7 @@ Example of conversion process being split on steps
 The following example is usable for conversions that is not instant and may require some time to complete. 
 In this case you may get the conversion ID and check the conversion status later, omitting "->wait()" call and making conversion starting process instant:
 
-#####Start conversion:
+##### Start conversion:
 ```php
 <?php
   require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
@@ -148,7 +148,7 @@ In this case you may get the conversion ID and check the conversion status later
       echo "Miscellaneous Exception occurred: " . $e->getMessage() . "\n";
   }
 ```
-#####Check conversion status and download the result:
+##### Check conversion status and download the result:
 The exception handling in this code snippet is essential. Conversion errors throw APIException which have to be handled properly.  
 ```php
 <?php
