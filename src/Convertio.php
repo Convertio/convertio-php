@@ -100,6 +100,39 @@ class Convertio
     }
 
     /**
+     * This method is used to set wrapper config variables, i.e.:
+     * $Convertio->__set('convert_id','32-char-long-string')
+     *
+     * @param string $property one of the wrapper private property
+     * @param string $value the value of the property
+     * @return mixed
+     *
+     * @throws \Convertio\Exceptions\APIException if the value of property is incorrect
+     */
+    public function __set($property, $value)
+    {
+        if (property_exists($this, $property)) {
+            if (($property == 'convert_id') && (strlen($value) != 32)) {
+                throw new APIException("Convert ID is a 32 characters long string");
+            }
+            $this->$property = $value;
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * This method is used to get the Conversion ID and use it in another API instance
+     *
+     * @return string
+     */
+    public function getConvertID()
+    {
+        return $this->convert_id;
+    }
+
+    /**
      * Wait for the conversion to finish
      *
      * @return \Convertio\Convertio

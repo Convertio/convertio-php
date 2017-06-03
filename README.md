@@ -121,6 +121,64 @@ The following example shows how to catch the different exception types which can
   }
 ```
 
+Example of conversion process being split on steps
+-------------------
+The following example is usable for conversions that is not instant and may require some time to complete. 
+In this case you may get the conversion ID and check the conversion status later, omitting "->wait()" call and making conversion starting process instant:
+
+#####Start conversion:
+```php
+<?php
+  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
+
+  use \Convertio\Convertio;
+  use \Convertio\Exceptions\APIException;
+  use \Convertio\Exceptions\CURLException;
+
+  try {
+      $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
+      $ConvertID = $API->start('./test.avi', 'hevc')    // Start AVI => HEVC conversion
+                       ->getConvertID();                // Get the Conversion ID
+
+  } catch (APIException $e) {
+      echo "API Exception: " . $e->getMessage() . " [Code: ".$e->getCode()."]" . "\n";
+  } catch (CURLException $e) {
+      echo "HTTP Connection Exception: " . $e->getMessage() . " [CURL Code: ".$e->getCode()."]" . "\n";
+  } catch (Exception $e) {
+      echo "Miscellaneous Exception occurred: " . $e->getMessage() . "\n";
+  }
+```
+#####Check conversion status and download the result:
+The exception handling in this code snippet is essential. Conversion errors throw APIException which have to be handled properly.  
+```php
+<?php
+  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
+
+  use \Convertio\Convertio;
+  use \Convertio\Exceptions\APIException;
+  use \Convertio\Exceptions\CURLException;
+
+  try {
+      $API = new Convertio("_YOUR_API_KEY_");            // You can obtain API Key here: https://convertio.co/api/
+      $API->__set('convert_id', $ConvertID);             // Set Conversion ID. $ConvertID is a string, obtained in previous snippet
+      $API->status();                                    // Check status of the conversion
+
+      if ($API->step == 'finish') {                      // If conversion finished
+          $API->download('test.hevc.mp4')->delete();     // Save result into local file and download it from conversion server
+      } else {                                           // Otherwise print some message
+         echo "Conversion didn't finish yet." . "\n";
+         echo "Check back later." . "\n";
+      }
+
+  } catch (APIException $e) {
+      echo "API Exception: " . $e->getMessage() . " [Code: ".$e->getCode()."]" . "\n";
+  } catch (CURLException $e) {
+      echo "HTTP Connection Exception: " . $e->getMessage() . " [CURL Code: ".$e->getCode()."]" . "\n";
+  } catch (Exception $e) {
+      echo "Miscellaneous Exception occurred: " . $e->getMessage() . "\n";
+  }
+```
+
 Resources
 ---------
 
