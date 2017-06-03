@@ -122,7 +122,7 @@ class Convertio
     /**
      * Starts new conversion with custom data.
      *
-     * @param array $data parameters for the conversion
+     * @param string|resource|array $data parameters for the conversion
      * @return \Convertio\Convertio
      *
      * @throws \Exception
