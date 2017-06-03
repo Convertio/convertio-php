@@ -1,0 +1,34 @@
+{
+  "name": "convertio/convertio-php",
+  "description": "Official PHP Wrapper for Convertio API",
+  "homepage": "https://github.com/convertio/convertio-php",
+  "keywords": [
+    "convertio",
+    "api",
+    "sdk",
+    "rest",
+    "converter",
+    "file converter"
+  ],
+  "type": "library",
+  "authors": [
+    {
+      "name": "Convertio Team",
+      "email": "support@convertio.co",
+      "homepage": "https://convertio.co/api/"
+    }
+  ],
+  "support": {
+      "name": "Convertio Team",
+      "email": "support@convertio.co",
+      "docs": "https://convertio.co/api/docs/"
+  },
+  "require": {
+    "php": ">=5.3",
+    "ext-curl": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {"Convertio\\": "src/"}
+  }
+}

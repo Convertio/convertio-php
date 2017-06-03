@@ -18,7 +18,7 @@ Quickstart
 Following example will render remote web page into PNG image:
 ```php
 <?php
-  require 'autoload.php';
+  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
   use \Convertio\Convertio;
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
@@ -32,7 +32,7 @@ Following example will render remote web page into PNG image:
 Following example will convert local DOCX file to PDF:
 ```php
 <?php
-  require 'autoload.php';
+  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
   use \Convertio\Convertio;
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
@@ -42,7 +42,7 @@ Following example will convert local DOCX file to PDF:
 Following example will extract clean text from DOCX:
 ```php
 <?php
-  require 'autoload.php';
+  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
   use \Convertio\Convertio;
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
@@ -54,7 +54,7 @@ Following example will extract clean text from DOCX:
 Following example will override default API parameters in case you don't have SSL enabled in your PHP installation or want to limit execution time:
 ```php
 <?php
-  require 'autoload.php';
+  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
   use \Convertio\Convertio;
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
@@ -64,13 +64,34 @@ Following example will override default API parameters in case you don't have SS
 
 Installation
 -------------------
+You can use **Composer** or simply **Download the Release**
+
+#### Composer
+The preferred method is via [composer](https://getcomposer.org). Follow the
+[installation instructions](https://getcomposer.org/doc/00-intro.md) if you do not already have
+composer installed.
+
+Once composer is installed, execute the following command in your project root to install this library:
+
+```sh
+composer require convertio/convertio-php
+```
+
+Finally, be sure to include the autoloader:
+
+```php
+<?php
+require_once '/path/to/your-project/vendor/autoload.php';
+```
+
+#### Download the Release
 You can download the package in its entirety. The [Releases](https://github.com/convertio/convertio-php/releases) page lists all stable versions.
 Download any file with the name `convertio-php-[RELEASE_NAME].zip` for a package including this library and its dependencies.
 Uncompress the zip file you download, and include the autoloader in your project:
 
 ```php
 <?php
-  require '/path/to/convertio-php/autoload.php';
+  require_once '/path/to/convertio-php/autoload.php';
   use \Convertio\Convertio;
   $API = new Convertio("_YOUR_API_KEY_");
   //...
@@ -82,7 +103,7 @@ The following example shows how to catch the different exception types which can
 
 ```php
 <?php
-  require_once "autoload.php";
+  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
 
   use \Convertio\Convertio;
   use \Convertio\Exceptions\APIException;
