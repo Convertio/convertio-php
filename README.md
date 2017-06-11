@@ -62,6 +62,30 @@ Following example will override default API parameters in case you don't have SS
   $API->startFromURL('http://google.com/', 'png')->wait()->download('./google.png')->delete();
 ```
 
+OCR Quickstart
+-------------------
+Following example will convert pages 1-3,5,7 of PDF into editable DOCX, using OCR (Optical Character Recognition) for English and Spanish languages (<a href="https://convertio.co/api/docs/#ocr_langs">Full list of available languages</a>):
+```php
+<?php
+  require_once 'autoload.php';                      // Comment this line if you use Composer to install the package
+
+  use \Convertio\Convertio;
+
+  $API = new Convertio("_YOUR_API_KEY_");
+  $API->start('./test.pdf', 'docx',                 // Convert PDF (which contain scanned pages) into editable DOCX
+    [                                               // Setting Conversion Options (Docs: https://convertio.co/api/docs/#options)
+      'ocr_enabled' => true,                        // Enabling OCR 
+      'ocr_settings' => [                           // Defining OCR Settings
+        'langs' => ['eng','spa'],                   // OCR language list (Full list: https://convertio.co/api/docs/#ocr_langs)
+        'page_nums' => '1-3,5,7'                    // Page numbers to process (optional)
+      ]
+    ]
+  )
+  ->wait()                                          // Wait for conversion finish
+  ->download('./test.docx')                         // Download Result To Local File
+  ->delete();                                       // Delete Files from Convertio hosts
+```
+
 Installation
 -------------------
 You can use **Composer** or simply **Download the Release**

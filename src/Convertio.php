@@ -187,6 +187,7 @@ class Convertio
      *
      * @param string $input_fn path to local input file
      * @param string $output_format output format. You can view available formats on https://convertio.co/formats/
+     * @param array $options conversion options. You can view available options on https://convertio.co/api/docs/
      * @return \Convertio\Convertio
      *
      * @throws \Exception
@@ -194,11 +195,12 @@ class Convertio
      * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
      *
      */
-    public function start($input_fn, $output_format)
+    public function start($input_fn, $output_format, $options = array())
     {
         $data = array();
         $data['input'] = 'upload';
         $data['outputformat'] = $output_format;
+        $data['options'] = $options;
 
         $this->rawStart($data);
 
@@ -223,6 +225,7 @@ class Convertio
      *
      * @param string $url URI of input file or web-page
      * @param string $output_format output format. You can view available formats on https://convertio.co/formats/
+     * @param array $options conversion options. You can view available options on https://convertio.co/api/docs/
      * @return \Convertio\Convertio
      *
      * @throws \Exception
@@ -230,12 +233,13 @@ class Convertio
      * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
      *
      */
-    public function startFromURL($url, $output_format)
+    public function startFromURL($url, $output_format, $options = array())
     {
         $data = array();
         $data['input'] = 'url';
         $data['file'] = $url;
         $data['outputformat'] = $output_format;
+        $data['options'] = $options;
 
         return $this->rawStart($data);
     }
@@ -248,6 +252,7 @@ class Convertio
      * @param string $content converting file's content.
      * @param string $input_format input format. You can view available formats on https://convertio.co/formats/
      * @param string $output_format output format. You can view available formats on https://convertio.co/formats/
+     * @param array $options conversion options. You can view available options on https://convertio.co/api/docs/
      * @return \Convertio\Convertio
      *
      * @throws \Exception
@@ -255,13 +260,14 @@ class Convertio
      * @throws \Convertio\Exceptions\CURLException if there is a general HTTP / network error
      *
      */
-    public function startFromContent($content, $input_format, $output_format)
+    public function startFromContent($content, $input_format, $output_format, $options = array())
     {
         $data = array();
         $data['input'] = 'base64';
         $data['file'] = base64_encode($content);
         $data['filename'] = 'raw.' . $input_format;
         $data['outputformat'] = $output_format;
+        $data['options'] = $options;
 
         return $this->rawStart($data);
     }
