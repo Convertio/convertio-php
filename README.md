@@ -18,7 +18,7 @@ Quickstart
 Following example will render remote web page into PNG image:
 ```php
 <?php
-  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
+  require_once 'autoload.php';                      // Comment this line if you use Composer to install the package
   use \Convertio\Convertio;
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
@@ -32,7 +32,7 @@ Following example will render remote web page into PNG image:
 Following example will convert local DOCX file to PDF:
 ```php
 <?php
-  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
+  require_once 'autoload.php';                      // Comment this line if you use Composer to install the package
   use \Convertio\Convertio;
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
@@ -42,7 +42,7 @@ Following example will convert local DOCX file to PDF:
 Following example will extract clean text from DOCX:
 ```php
 <?php
-  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
+  require_once 'autoload.php';                      // Comment this line if you use Composer to install the package
   use \Convertio\Convertio;
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
@@ -54,7 +54,7 @@ Following example will extract clean text from DOCX:
 Following example will override default API parameters in case you don't have SSL enabled in your PHP installation or want to limit execution time:
 ```php
 <?php
-  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
+  require_once 'autoload.php';                      // Comment this line if you use Composer to install the package
   use \Convertio\Convertio;
 
   $API = new Convertio("_YOUR_API_KEY_");           // You can obtain API Key here: https://convertio.co/api/
@@ -103,7 +103,7 @@ The following example shows how to catch the different exception types which can
 
 ```php
 <?php
-  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
+  require_once 'autoload.php';                       // Comment this line if you use Composer to install the package
 
   use \Convertio\Convertio;
   use \Convertio\Exceptions\APIException;
@@ -129,7 +129,7 @@ In this case you may get the conversion ID and check the conversion status later
 ##### Start conversion:
 ```php
 <?php
-  require_once 'autoload.php';                           // Comment this line if you use Composer to install the package
+  require_once 'autoload.php';                          // Comment this line if you use Composer to install the package
 
   use \Convertio\Convertio;
   use \Convertio\Exceptions\APIException;

@@ -4,6 +4,10 @@
  */
 namespace Convertio;
 
+use Exception;
+use Convertio\Exceptions\APIException;
+use Convertio\Exceptions\CURLException;
+
 /**
  * Convertio API Wrapper
  */
