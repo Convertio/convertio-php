@@ -145,6 +145,62 @@ The following example shows how to catch the different exception types which can
   }
 ```
 
+Example of conversion process with callback URL
+-------------------
+The following example is usable for conversions that is not instant and may require some time to complete. 
+In this case you may define the callback URL (<a href="https://convertio.co/api/docs/#options_callback">More info</a>), which gets notified when the conversion is over (either successful or not):
+
+##### Start conversion:
+```php
+<?php
+  require_once 'autoload.php';                              // Comment this line if you use Composer to install the package
+
+  use \Convertio\Convertio;
+  use \Convertio\Exceptions\APIException;
+  use \Convertio\Exceptions\CURLException;
+
+  try {
+      $API = new Convertio("_YOUR_API_KEY_");               // You can obtain API Key here: https://convertio.co/api/
+      $API->start('./test.avi', 'hevc', [                   // Start AVI => HEVC conversion
+          "callback_url" => "https://path/to/callback.php"  // Defined publicly available callback URL
+      ]); 
+  } catch (APIException $e) {
+      echo "API Exception: " . $e->getMessage() . " [Code: ".$e->getCode()."]" . "\n";
+  } catch (CURLException $e) {
+      echo "HTTP Connection Exception: " . $e->getMessage() . " [CURL Code: ".$e->getCode()."]" . "\n";
+  } catch (Exception $e) {
+      echo "Miscellaneous Exception occurred: " . $e->getMessage() . "\n";
+  }
+```
+##### Callback handler example:
+The exception handling in this code snippet is essential. Conversion errors throw APIException which have to be handled properly. Please, read <a href="https://convertio.co/api/docs/#options_callback">more info about step parameter</a>.  
+```php
+<?php
+  require_once 'autoload.php';                       // Comment this line if you use Composer to install the package
+
+  use \Convertio\Convertio;
+  use \Convertio\Exceptions\APIException;
+  use \Convertio\Exceptions\CURLException;
+
+  try {
+      $API = new Convertio("_YOUR_API_KEY_");        // You can obtain API Key here: https://convertio.co/api/
+      $API->__set('convert_id', $_GET['id']);        // Set Conversion ID
+      if ($_GET['step'] == 'finished') {             // If conversion finished
+          $API->download('test.hevc.mp4')            // Download result into local file
+              ->delete();                            // Delete it from conversion server
+      } else {                                       // Otherwise handle error in appropriate way
+          echo "Conversion failed." . "\n";
+      }       
+  } catch (APIException $e) {
+      echo "API Exception: " . $e->getMessage() . " [Code: ".$e->getCode()."]" . "\n";
+  } catch (CURLException $e) {
+      echo "HTTP Connection Exception: " . $e->getMessage() . " [CURL Code: ".$e->getCode()."]" . "\n";
+  } catch (Exception $e) {
+      echo "Miscellaneous Exception occurred: " . $e->getMessage() . "\n";
+  }
+```
+
+
 Example of conversion process being split on steps
 -------------------
 The following example is usable for conversions that is not instant and may require some time to complete. 
