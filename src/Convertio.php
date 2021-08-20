@@ -135,7 +135,28 @@ class Convertio
     {
         return $this->convert_id;
     }
-
+    
+    
+    /**
+     * This method is used to get the minutes remaining (if calling after a start)
+     *
+     * @return INTEGER
+     */
+    public function getMinutes()
+    {
+		$minutes = 0;
+		
+        if (isset($this->data['data'])) {
+			$d = $this->data['data'];
+			if (isset($d['minutes'])) {
+				$minutes = intval($d['minutes']);
+			}
+		}
+		
+		return $minutes;
+    }
+    
+    
     /**
      * Wait for the conversion to finish
      *
